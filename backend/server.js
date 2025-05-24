@@ -4,9 +4,12 @@ import cors from "cors";
 import { connectDB } from "./config/db.js";
 import transactionRoute from "./routes/transactionRoute.js";
 import rateLimiter from "./middlewares/ratelimiter.js";
+import job from "./config/cron.js";
 dotenv.config();
 
 const app = express();
+
+job.start();
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(rateLimiter);
