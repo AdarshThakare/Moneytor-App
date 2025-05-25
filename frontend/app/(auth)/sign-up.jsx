@@ -45,6 +45,15 @@ export default function SignUpScreen() {
     } catch (err) {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
+      if (err.errors[0]?.code === "form_password_incorrect") {
+        setError(
+          err.errors[0]?.message ||
+            JSON.stringify(err, null, 2) ||
+            "Your Password is incorrect. Please try again."
+        );
+      } else {
+        setError("An error occured. Please try again.");
+      }
       console.error(JSON.stringify(err, null, 2));
     }
   };
@@ -72,7 +81,14 @@ export default function SignUpScreen() {
     } catch (err) {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
+      if (err.errors[0]?.code === "form_password_incorrect") {
+        setError(
+          err.errors[0]?.message ||
+            "Your Password is incorrect. Please try again."
+        );
+      } else {
+        setError("An error occured. Please try again.");
+      }
     }
   };
 
@@ -160,7 +176,7 @@ export default function SignUpScreen() {
               padding: 6,
               paddingTop: 0,
               fontWeight: 500,
-              color: "brown",
+              color: "#5E2E1E",
               letterSpacing: 0.4,
             }}
           >
@@ -181,7 +197,7 @@ export default function SignUpScreen() {
               fontSize: 15,
               padding: 6,
               fontWeight: 500,
-              color: "brown",
+              color: "#5E2E1E",
               letterSpacing: 0.4,
             }}
           >
