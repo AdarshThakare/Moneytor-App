@@ -1,6 +1,6 @@
 import { sql } from "../config/db.js";
 
-const symmary = async (req, res) => {
+const summary = async (req, res) => {
   try {
     const { userId } = req.params;
 
@@ -9,16 +9,16 @@ const symmary = async (req, res) => {
           `;
 
     const incomeResult = await sql`
-           SELECT COALESCE(SUM(amount) , 0) as income FROM transactions WHERE user_id = ${userId} AND amount > 0;
+           SELECT COALESCE(SUM(amount),0) as income FROM transactions WHERE user_id = ${userId} AND amount > 0;
            `;
 
     const expensesResult = await sql`
-            SELECT COALESCE(SUM(amount) , 0) as expenses FROM transactions WHERE user_id = ${userId} AND amount < 0;
+            SELECT COALESCE(SUM(amount),0) as expenses FROM transactions WHERE user_id = ${userId} AND amount < 0;
              `;
 
     res.status(200).json({
       balance: balanceResult[0].balance,
-      incomeResult: incomeResult[0].income,
+      income: incomeResult[0].income,
       expenses: expensesResult[0].expenses,
     });
   } catch (err) {
@@ -27,4 +27,4 @@ const symmary = async (req, res) => {
   }
 };
 
-export default symmary;
+export default summary;

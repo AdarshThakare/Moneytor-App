@@ -4,7 +4,7 @@ const addTransaction = async (req, res) => {
   try {
     const { user_id, title, category, amount } = req.body;
 
-    if (!user_id || !title || !category || amount === undefined || !amount) {
+    if (!user_id || !title || !category || amount === undefined) {
       return res.status(400).send({ msg: "All the fileds are required" });
     }
 
