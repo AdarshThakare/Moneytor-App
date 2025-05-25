@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useState } from "react";
 import { Alert } from "react-native";
 
-const API_URL = "http://localhost:5001/api/v1/transactions";
+const API_URL = "https://moneytor-app-y46u.onrender.com/api/v1/transactions";
 
 const useTransactions = (userId) => {
   const [transactions, setTransactions] = useState([]);
@@ -15,6 +15,8 @@ const useTransactions = (userId) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchTransactions = useCallback(async () => {
+    setIsLoading(true);
+
     try {
       const response = await fetch(`${API_URL}/${userId}`);
       const data = await response.json();
@@ -26,9 +28,10 @@ const useTransactions = (userId) => {
 
   const fetchSummary = useCallback(async () => {
     setIsLoading(true);
+
     try {
       const response = await fetch(`${API_URL}/summary/${userId}`);
-      const data = response.json();
+      const data = await response.json();
       setSummary(data);
     } catch (err) {
       console.error("Error fetching the summary : ", err);
@@ -40,7 +43,7 @@ const useTransactions = (userId) => {
 
     setIsLoading(true);
     try {
-      await Promise.all([fetchSummary(), fetchTransactions()]);
+      await Promise.all([fetchTransactions(), fetchSummary()]);
     } catch (err) {
       console.error("Error loading the data : ", err);
     } finally {
@@ -51,7 +54,7 @@ const useTransactions = (userId) => {
   const deleteTrans = async (id) => {
     try {
       const response = await fetch(`${API_URL}/${id}`, {
-        method: "DELERE",
+        method: "DELETE",
       });
 
       if (!response.ok) throw new Error("Failed to delete the transaction");

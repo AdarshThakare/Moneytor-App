@@ -7,16 +7,13 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   content: {
-    padding: 20,
+    padding: 8,
     paddingBottom: 0,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
-    paddingHorizontal: 0,
-    paddingVertical: 12,
   },
   headerLeft: {
     flex: 1,
@@ -24,15 +21,15 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerLogo: {
-    width: 75,
-    height: 75,
+    width: 90,
+    height: 80,
   },
   welcomeContainer: {
     flex: 1,
   },
   welcomeText: {
-    fontSize: 14,
-    color: COLORS.textLight,
+    fontSize: 15,
+    color: COLORS.text,
     marginBottom: 2,
   },
   usernameText: {
