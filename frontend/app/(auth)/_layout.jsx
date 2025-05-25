@@ -2,10 +2,12 @@ import { Redirect, Stack } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 import { StatusBar } from "react-native";
 import { COLORS } from "../../constants/colors";
+import PageLoader from "../../components/PageLoader";
 
 export default function AuthRoutesLayout() {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, isLoaded } = useAuth();
 
+  if (!isLoaded) return <PageLoader />;
   if (isSignedIn) {
     return <Redirect href={"/"} />;
   }

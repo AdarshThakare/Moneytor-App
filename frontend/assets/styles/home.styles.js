@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerLogo: {
-    width: 90,
+    width: 110,
     height: 80,
   },
   welcomeContainer: {
@@ -105,11 +105,11 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   balanceStatItem: {
-    flex: 1,
+    flex: 0,
     alignItems: "center",
   },
   statDivider: {
-    borderRightWidth: 1,
+    borderRightWidth: 2,
     borderColor: COLORS.border,
   },
   balanceStatLabel: {

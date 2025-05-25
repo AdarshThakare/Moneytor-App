@@ -1,8 +1,7 @@
 import { useCallback } from "react";
 import { useState } from "react";
 import { Alert } from "react-native";
-
-const API_URL = "https://moneytor-app-y46u.onrender.com/api/v1/transactions";
+import { API_URL } from "../constants/api.js";
 
 const useTransactions = (userId) => {
   const [transactions, setTransactions] = useState([]);

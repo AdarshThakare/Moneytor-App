@@ -1,6 +1,14 @@
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  Image,
+  RefreshControl,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SignOutButton } from "../../components/SignOutButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useTransactions from "../../hooks/useTransactions.js";
@@ -9,19 +17,44 @@ import PageLoader from "../../components/PageLoader.jsx";
 import { styles } from "../../assets/styles/home.styles.js";
 import { Ionicons } from "@expo/vector-icons";
 import BalanceCard from "../../components/BalanceCard.jsx";
+import TransactionItem from "../../components/TransactionItem.jsx";
+import NoTransactionsFound from "../../components/NoTransactionsFound.jsx";
+import { useState } from "react";
 
 export default function Page() {
   const { user } = useUser();
   const router = useRouter();
+  const [refreshing, setRefreshing] = useState(false);
 
   const { transactions, summary, isLoading, loadData, deleteTrans } =
     useTransactions(user.id);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadData();
+    setRefreshing(false);
+  };
+
+  const handleDelete = (id) => {
+    Alert.alert(
+      "Delete Transaction",
+      "Are you sure, you want to delete this transaction ?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => deleteTrans(id),
+        },
+      ]
+    );
+  };
 
   useEffect(() => {
     loadData();
   }, [loadData]);
 
-  if (isLoading) return <PageLoader />;
+  if (isLoading && !refreshing) return <PageLoader />;
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -47,7 +80,7 @@ export default function Page() {
           </View>
         </View>
 
-        <View style={{ paddingHorizontal: 10 }}>
+        <View style={{ padding: 10, paddingTop: 0 }}>
           <Text style={styles.welcomeText}>
             Welcome,{"  "}
             <Text style={styles.usernameText}>
@@ -59,6 +92,21 @@ export default function Page() {
         </View>
         <BalanceCard summary={summary} />
       </View>
+
+      {/* FLATLIST */}
+      <FlatList
+        style={styles.transactionsList}
+        contentContainerStyle={styles.transactionsListContent}
+        data={transactions}
+        renderItem={({ item }) => (
+          <TransactionItem item={item} onDelete={handleDelete} />
+        )}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={<NoTransactionsFound />}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      />
     </View>
   );
 }
