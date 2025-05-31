@@ -99,8 +99,6 @@ const create = () => {
         }),
       });
 
-      console.log(response);
-
       if (!response.ok) {
         const errorData = await response.json();
         Alert.alert("Error", "Failed to create transaction");

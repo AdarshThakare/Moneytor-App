@@ -52,9 +52,13 @@ export default function SignUpScreen() {
             "Your Password is incorrect. Please try again."
         );
       } else {
-        setError("An error occured. Please try again.");
+        setError(
+          err.errors[0]?.message ||
+            JSON.stringify(err, null, 2) ||
+            "An error occured. Please try again."
+        );
       }
-      console.error(JSON.stringify(err, null, 2));
+      console.log(JSON.stringify(err, null, 2));
     }
   };
 
